@@ -10,7 +10,7 @@ spec:
     targetRevision: main
     path: apps/voting-api
   destination:
-    server: https://kubernetes.default.svc
+    server: arn:aws:eks:eu-central-1:209479284687:cluster/copebit-eks-cluster-hcz7dd
     namespace: voting-api
   syncPolicy:
     automated:
