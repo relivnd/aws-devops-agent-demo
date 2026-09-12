@@ -143,3 +143,25 @@ output "terratest_tags" {
   value       = var.terratest_tags
   description = "Terratest Tags"
 }
+
+# ── simple-answer app ─────────────────────────────────────────────────────────
+
+output "simple_answer_table_name" {
+  value       = aws_dynamodb_table.simple_answer.name
+  description = "Name of the DynamoDB table holding the answer."
+}
+
+output "simple_answer_table_arn" {
+  value       = aws_dynamodb_table.simple_answer.arn
+  description = "ARN of the DynamoDB table holding the answer."
+}
+
+output "simple_answer_role_arn" {
+  value       = aws_iam_role.simple_answer.arn
+  description = "ARN of the Pod Identity role assumed by the simple-answer pods."
+}
+
+output "simple_answer_image_repository" {
+  value       = "${module.demo_app_ecr_repository.registry_url}/${module.demo_app_ecr_repository.repository_name}"
+  description = "ECR repository for the simple-answer container image (tag with :v1 etc.)."
+}

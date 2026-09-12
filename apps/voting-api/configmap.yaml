@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: voting-api-config
-  namespace: voting-api
-data:
-  settings.conf: |
-    app_name=CNZ Voting API
-    environment=production

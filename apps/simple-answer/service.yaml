@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-answer
+  namespace: simple-answer
+  labels:
+    app.kubernetes.io/name: simple-answer
+  annotations:
+    # Internal NLB: reachable from inside the VPC only. The app has no
+    # authentication, so do not expose it to the internet without adding some.
+    # To make it public, set this to "internet-facing" — the VPC public subnets
+    # are already tagged with kubernetes.io/role/elb=1.
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internal
+spec:
+  # Required on EKS Auto Mode: the built-in load balancing capability only
+  # reconciles Services with this class. A plain `type: LoadBalancer` without it
+  # stays in <pending>.
+  loadBalancerClass: eks.amazonaws.com/nlb
+  type: LoadBalancer
+  selector:
+    app: simple-answer
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      protocol: TCP

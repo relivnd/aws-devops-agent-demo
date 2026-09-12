@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: voting-api
+  name: simple-answer
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/relivnd/CNZ-2026-Demo.git
     targetRevision: main
-    path: apps/voting-api
+    path: apps/simple-answer
   destination:
-    server: arn:aws:eks:eu-central-1:209479284687:cluster/copebit-eks-cluster-hcz7dd
-    namespace: voting-api
+    server: arn:aws:eks:eu-central-1:209479284687:cluster/copebit-eks-cluster-s00nrj
+    namespace: simple-answer
   syncPolicy:
     automated:
       prune: true

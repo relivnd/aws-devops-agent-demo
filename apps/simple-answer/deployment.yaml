@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-answer
+  namespace: simple-answer
+  labels:
+    app.kubernetes.io/name: simple-answer
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: simple-answer
+  template:
+    metadata:
+      labels:
+        app: simple-answer
+    spec:
+      # Binds the pod to the Pod Identity association, which supplies the
+      # temporary credentials used by the AWS SDK to call DynamoDB.
+      serviceAccountName: simple-answer
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: simple-answer
+          image: 209479284687.dkr.ecr.eu-central-1.amazonaws.com/simple-answer:v1
+          ports:
+            - name: http
+              containerPort: 3000
+          env:
+            # The AWS SDK cannot resolve a region inside the container: there is
+            # no ~/.aws/config, so this must be set explicitly.
+            - name: AWS_REGION
+              value: eu-central-1
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          # Probes hit /health, which does not touch DynamoDB — probing / would
+          # bill a read request every few seconds per pod.
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
