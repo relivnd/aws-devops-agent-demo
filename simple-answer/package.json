@@ -1,0 +1,16 @@
+{
+  "name": "suicide_app",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1130.0",
+    "@aws-sdk/lib-dynamodb": "^3.1130.0",
+    "express": "^5.2.1",
+    "winston": "^3.19.0"
+  }
+}
