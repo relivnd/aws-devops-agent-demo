@@ -6,11 +6,12 @@ metadata:
   labels:
     app.kubernetes.io/name: simple-answer
   annotations:
-    # Internal NLB: reachable from inside the VPC only. The app has no
-    # authentication, so do not expose it to the internet without adding some.
-    # To make it public, set this to "internet-facing" — the VPC public subnets
-    # are already tagged with kubernetes.io/role/elb=1.
-    service.beta.kubernetes.io/aws-load-balancer-scheme: internal
+    # Internet-facing NLB, placed in the VPC public subnets (already tagged
+    # kubernetes.io/role/elb=1). The app has no authentication, so anything
+    # reachable here is public — see load-balancer-source-ranges below if you
+    # want to restrict it to known client IPs.
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    # service.beta.kubernetes.io/load-balancer-source-ranges: "203.0.113.4/32"
 spec:
   # Required on EKS Auto Mode: the built-in load balancing capability only
   # reconciles Services with this class. A plain `type: LoadBalancer` without it
