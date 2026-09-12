@@ -35,7 +35,7 @@ app.get('/', async (req, res) => {
   try {
     const answer = await getSimpleAnswer();
     logger.info('resolved answer', { answer });
-    res.json(answer);
+    res.send(`The Answer To Life The Universe And Everything is: ${answer}`);
   } catch (err) {
     logger.error('failed to read answer from DynamoDB', { error: err.message });
     res.status(500).json({ error: 'internal error' });
