@@ -20,6 +20,8 @@ spec:
       serviceAccountName: simple-answer
       securityContext:
         runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
       containers:
@@ -29,8 +31,6 @@ spec:
             - name: http
               containerPort: 3000
           env:
-            # The AWS SDK cannot resolve a region inside the container: there is
-            # no ~/.aws/config, so this must be set explicitly.
             - name: AWS_REGION
               value: eu-central-1
           resources:
@@ -46,8 +46,6 @@ spec:
             capabilities:
               drop:
                 - ALL
-          # Probes hit /health, which does not touch DynamoDB — probing / would
-          # bill a read request every few seconds per pod.
           livenessProbe:
             httpGet:
               path: /health

@@ -31,6 +31,12 @@ const getSimpleAnswer = async () => {
   return data.Item[ANSWER_ATTRIBUTE];
 };
 
+// Probe endpoint for the Kubernetes liveness/readiness checks. Deliberately
+// does not touch DynamoDB, so probing it costs no read capacity.
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 app.get('/', async (req, res) => {
   try {
     const answer = await getSimpleAnswer();

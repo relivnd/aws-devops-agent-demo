@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/relivnd/CNZ-2026-Demo.git
+    repoURL: https://github.com/relivnd/aws-devops-agent-demo.git
     targetRevision: main
     path: apps/simple-answer
   destination:
